@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoheal-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: autoheal
+  template:
+    metadata:
+      labels:
+        app: autoheal
+    spec:
+      containers:
+      - name: autoheal-container
+        image: autoheal-app
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
